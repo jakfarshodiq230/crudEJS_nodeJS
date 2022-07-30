@@ -22,4 +22,4 @@ Silahkan download dan install
 
 # Hasil Run Program
 ![logo](https://github.com/jakfarshodiq230/crudEJS_nodeJS/tree/main/public/assets/login.png "title-1") 
-![logo](https://github.com/jakfarshodiq230/crudEJS_nodeJS/tree/main/public/assets/dasbort.png "title-2")
+![logo](https://github.com/jakfarshodiq230/crudEJS_nodeJS/blob/main/public/assets/card.png "title-2")
