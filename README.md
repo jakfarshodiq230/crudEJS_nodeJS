@@ -21,4 +21,5 @@ Silahkan download dan install
 - MongoDB Atlas (database online dari MongoDB), dengan catatan harus membuat akun terlebih dahulu
 
 # Hasil Run Program
-![alt-text-1](image1.png "title-1") ![alt-text-2](image2.png "title-2")
+![alt-text-1](https://github.com/jakfarshodiq230/crudEJS_nodeJS/tree/main/public/assets/login.png "title-1") 
+![alt-text-2](https://github.com/jakfarshodiq230/crudEJS_nodeJS/tree/main/public/assets/dasbort.png "title-2")
