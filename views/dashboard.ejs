@@ -1,0 +1,303 @@
+<%- include('template/header') -%>
+  <style>
+    .avatar {
+      border-radius: 50%;
+      width: 20px;
+    }
+
+    .image_view {
+      width: 100px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+  <div style="margin:100px;" >
+    <div class="navbar navbar-inverse navbar-static-top" id="isi">
+      <div class="container">
+        <a class="navbar-brand" href="/mahasiswa">CRUD | NODE JS</a>
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="/mahasiswa">DATA MHS</a>
+          </li>
+          <li>
+            <a href="">UPLOAD</a>
+          </li>
+          <li>
+            <a href="/route/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+      </nav>
+      <div class="jumbotron" style="padding:40px;">
+        <!-- alert -->
+        <% if(locals.pesan){ %>
+          <div class="alert alert-success" role="alert">
+            <%= pesan %>
+          </div>
+          <% }%>
+            <h4>DATA MAHASISWA</h4>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahMHS">
+              TAMBAH MHS
+            </button>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Gambar</th>
+                  <th scope="col">Gambar</th>
+                  <th width="200px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(data.length){ for(var i=0; i< data.length; i++) {%>
+                  <tr>
+                    <th scope="row">
+                      <%= (i+1) %>
+                    </th>
+                    <td>
+                      <%= data[i].nama%>
+                    </td>
+                    <td>
+                      <%= data[i].email%>
+                    </td>
+                    <td>
+                      <% if(data[i].image != null){%>
+                      <a data-toggle="modal" data-target="#viewMHS<%=data[i].id%>"><img src="/<%= data[i].image%>"
+                          class="avatar" alt="Responsive image"></a>
+                      <% }else{ %>
+                          -
+                        <% } %>
+                      <!-- Modal add -->
+                      <div class="modal fade" id="viewMHS<%=data[i].id%>" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="card-container">
+                          <div class="upper-container">
+                            <div class="image-container">
+                              <img src="/<%= data[i].image%>" />
+                            </div>
+                          </div>
+
+                          <div class="lower-container">
+                            <div>
+                              <h3><%= data[i].nama%></h3>
+                              <h4> <%= data[i].email%></h4>
+                            </div>
+                            <div>
+                              <p>sodales accumsan ligula. Aenean sed diam tristique, fermentum mi nec, ornare
+                                arcu.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#uploadMHS<%=data[i].id%>">
+                        UPLOAD FOTO
+                      </button>
+                      <!-- Modal add -->
+                      <div class="modal fade" id="uploadMHS<%=data[i].id%>" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">UPLOAD FOTO MHS</h5>
+                            </div>
+                            <form action="/mahasiswa/file/<%=data[i].id%>" method="POST" class="pt-3" enctype="multipart/form-data">
+                              <div class="modal-body">
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">NAMA</label>
+                                  <input type="text" class="form-control" placeholder="nama" name="nama"
+                                    value="<%=data[i].nama%>" readonly>
+                                </div>
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">NIM</label>
+                                  <input type="text" class="form-control" placeholder="nim" name="nim"
+                                    value="<%=data[i].nim%>" readonly>
+                                </div>
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">Email</label>
+                                  <input type="email" class="form-control" placeholder="email" name="email"
+                                    value="<%=data[i].email%>" readonly>
+                                </div>
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">Gamabr</label>
+                                  <input type="file" class="form-control" placeholder="image" name="imageMHS" id="imgInp">
+                                </div>
+                                <img id='img-upload' class="image_view" />
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-success" data-toggle="modal"
+                        data-target="#editMHS<%=data[i].id%>">
+                        EDIT
+                      </button>
+                      <!-- Modal edit -->
+                      <div class="modal fade" id="editMHS<%=data[i].id%>" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">EDIT MHS</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form action="/mahasiswa/update/<%=data[i].id%>" method="POST" class="pt-3">
+                              <div class="modal-body">
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">NAMA</label>
+                                  <input type="text" class="form-control" placeholder="nama" name="nama"
+                                    value="<%=data[i].nama%>">
+                                </div>
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">NIM</label>
+                                  <input type="text" class="form-control" placeholder="nim" name="nim"
+                                    value="<%=data[i].nim%>">
+                                </div>
+                                <div class="form-group mb-4 mt-2">
+                                  <label class="form-label">Email</label>
+                                  <input type="email" class="form-control" placeholder="email" name="email"
+                                    value="<%=data[i].email%>">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#hapusMHS<%=data[i].id%>">
+                        HAPUS
+                      </button>
+                      <!-- Modal add -->
+                      <div class="modal fade" id="hapusMHS<%=data[i].id%>" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">HAPUS MHS</h5>
+                            </div>
+                            <form action="/mahasiswa/delete/<%=data[i].id%>" method="POST" class="pt-3">
+                              <div class="modal-body">
+                                <div class=" mb-4 mt-2">
+                                  <input type="hidden" class="form-control" placeholder="nama" name="nama">
+                                  <p>Apakah Anada Akan Menghapus Data <b>
+                                      <%=data[i].nama%>
+                                    </b></p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% } }else{ %>
+                    <tr>
+                      <td colspan="3">No user</td>
+                    </tr>
+                    <% } %>
+              </tbody>
+            </table>
+      </div>
+      <!-- Modal add -->
+      <div class="modal fade" id="tambahMHS" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">TAMBAH MHS</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="/mahasiswa/add" method="POST" class="pt-3">
+              <div class="modal-body">
+                <div class="form-group mb-4 mt-2">
+                  <label class="form-label">NAMA</label>
+                  <input type="text" class="form-control" placeholder="nama" name="nama">
+                </div>
+                <div class="form-group mb-4 mt-2">
+                  <label class="form-label">NIM</label>
+                  <input type="text" class="form-control" placeholder="nim" name="nim">
+                </div>
+                <div class="form-group mb-4 mt-2">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" placeholder="email" name="email">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // $("#isi").hide();
+      $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+      })
+    </script>
+    <!-- privew image -->
+    <script>
+      $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+          var input = $(this),
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+          input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+          var input = $(this).parents('.input-group').find(':text'),
+            log = label;
+
+          if (input.length) {
+            input.val(log);
+          } else {
+            if (log) alert(log);
+          }
+
+        });
+        function readURL(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              $('#img-upload').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+
+        $("#imgInp").change(function () {
+          readURL(this);
+        });
+      });
+    </script>
+
+    <%- include('template/footer') -%>
